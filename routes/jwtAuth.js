@@ -3,10 +3,11 @@ const pool = require("../config/database");
 const bcrypt = require("bcrypt");
 
 const jwtGenerator = require("../utils/jwtGenerator");
-// register
+
+const validInfo = require("../middleware/validEmail");
 
 // add user
-router.post("/register", async (req, res) => {
+router.post("/register", validInfo, async (req, res) => {
   try {
     console.log(req.body);
     // destructure the req.body { name, email, password }
@@ -50,7 +51,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", validInfo, async (req, res) => {
   console.log(req.body);
   try {
     // get email and password from req.body
