@@ -46,7 +46,40 @@ router.post("/register", async (req, res) => {
     res.json({ token });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    res.status(500).send("Registration Error");
+  }
+});
+
+router.post("/login", async (req, res) => {
+  console.log(req.body);
+  try {
+    // get email and password from req.body
+    const { email, password } = req.body;
+
+    // check if user doesnt exist in DB
+    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    if (user.rows.length === 0) {
+      return res.status(401).json("Password or Email is incorrect");
+    }
+
+    // check if incoming password is the same as the password in the DB
+    const validPassword = await bcrypt.compare(password, user.rows[0].password);
+    console.log(`Valid password? ${validPassword}`); // true if password is valid
+
+    if (!validPassword) {
+      return res.status(401).json("Password or Email is incorrect");
+    }
+
+    // give client the jwt token
+    const token = jwtGenerator(user.rows[0].id);
+
+    res.json({ token });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Login Error");
   }
 });
 
