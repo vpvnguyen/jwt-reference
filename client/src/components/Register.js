@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Register = () => {
+const Register = ({ setAuth }) => {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -30,8 +30,11 @@ const Register = () => {
       });
 
       const parseResponse = await response.json();
-
       console.log(parseResponse);
+
+      localStorage.setItem("token", parseResponse.token);
+
+      setAuth(true);
     } catch (error) {
       console.error(error.message);
     }
