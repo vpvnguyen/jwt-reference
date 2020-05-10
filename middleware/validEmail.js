@@ -1,4 +1,5 @@
 module.exports = (req, res, next) => {
+  console.log(`validInfo: ${JSON.stringify(req.body)}`);
   const { email, name, password } = req.body;
 
   // General Email Regex (RFC 5322 Official Standard)
@@ -11,7 +12,6 @@ module.exports = (req, res, next) => {
 
   // check path and reject if any passed information is empty or email is invalid
   if (req.path === "/register") {
-    console.log(!email.length);
     if (![email, name, password].every(Boolean)) {
       return res.status(401).json("Missing Credentials");
     } else if (!validEmail(email)) {
