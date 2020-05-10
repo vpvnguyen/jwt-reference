@@ -5,11 +5,12 @@ const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 
 const validInfo = require("../middleware/validEmail");
+const authorization = require("../middleware/authorization");
 
 // add user
 router.post("/register", validInfo, async (req, res) => {
+  console.log(`/register: ${JSON.stringify(req.body)}`);
   try {
-    console.log(req.body);
     // destructure the req.body { name, email, password }
     const { name, email, password } = req.body;
     // check if user exists by querying db for users by email
@@ -17,7 +18,6 @@ router.post("/register", validInfo, async (req, res) => {
       email,
     ]);
 
-    console.log(user.rows);
     // if user exists, throw error
     // an array of objects will return if user exists
     // empty array will return if there are no users
@@ -26,20 +26,20 @@ router.post("/register", validInfo, async (req, res) => {
       return res.status(401).send("User already exists");
     }
 
-    // bcrypt the user password
+    // bcrypt the new user's password
     const saltRound = 10;
     const salt = await bcrypt.genSalt(saltRound);
 
-    // encrypt
+    // encrypted password
     const bcryptPassword = await bcrypt.hash(password, salt);
 
-    // enter the user inside the database
+    // insert the new user inside the database
     const newUser = await pool.query(
       "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *",
       [name, email, bcryptPassword]
     );
 
-    console.log(newUser.rows);
+    console.log(`inserted newUser: ${newUser.rows}`);
 
     // generate jwt token
     const token = jwtGenerator(newUser.rows[0].id);
@@ -52,7 +52,7 @@ router.post("/register", validInfo, async (req, res) => {
 });
 
 router.post("/login", validInfo, async (req, res) => {
-  console.log(req.body);
+  console.log(`/login: ${req.body}`);
   try {
     // get email and password from req.body
     const { email, password } = req.body;
@@ -81,6 +81,17 @@ router.post("/login", validInfo, async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Login Error");
+  }
+});
+
+router.get("/verify", authorization, async (req, res) => {
+  console.log(`/verify: ${JSON.stringify(req.body)}`);
+  try {
+    console.log("User verified!");
+    res.json(true);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json("Verification Error");
   }
 });
 
