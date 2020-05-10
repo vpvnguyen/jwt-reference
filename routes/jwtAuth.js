@@ -39,7 +39,7 @@ router.post("/register", validInfo, async (req, res) => {
       [name, email, bcryptPassword]
     );
 
-    console.log(`inserted newUser: ${newUser.rows}`);
+    console.log(`inserted newUser: ${JSON.stringify(newUser.rows[0])}`);
 
     // generate jwt token
     const token = jwtGenerator(newUser.rows[0].id);
