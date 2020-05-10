@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     );
   };
 
+  // check path and reject if any passed information is empty or email is invalid
   if (req.path === "/register") {
     console.log(!email.length);
     if (![email, name, password].every(Boolean)) {
