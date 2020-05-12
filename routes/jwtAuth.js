@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 
 const jwtGenerator = require("../utils/jwtGenerator");
 
+// import middleware
 const validInfo = require("../middleware/validEmail");
 const authorization = require("../middleware/authorization");
 
