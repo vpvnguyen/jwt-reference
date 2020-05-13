@@ -21,6 +21,7 @@ Encoded string: HEADER.PAYLOAD.SIGNATURE
 - Encrypt user's password using bcrypt
 - Store user's credentials into DB
 - Get user's uuid from DB and generate a JWT
+- Generate and verify JWT when user calls authorized API routes
 
 ## Setup
 
