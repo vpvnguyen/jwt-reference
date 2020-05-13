@@ -27,6 +27,7 @@ const App = () => {
           <h1>App</h1>
           <Switch>
             {/* component props vs render props = render will not remount when it is passed to a component */}
+            {/* if auth is set, render dashboard; else render login page */}
             <Route
               exact
               path="/login"
