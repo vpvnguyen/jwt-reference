@@ -84,6 +84,7 @@ router.post("/login", validInfo, async (req, res) => {
   }
 });
 
+// verify user's jwt
 router.get("/verify", authorization, async (req, res) => {
   console.log(`/verify: ${JSON.stringify(req.body)}`);
   try {
