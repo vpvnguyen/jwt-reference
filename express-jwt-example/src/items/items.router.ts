@@ -16,8 +16,4 @@ itemsRouter.post("/", ItemsController.createItem);
 itemsRouter.put("/:id", ItemsController.updateOrCreateItemById);
 
 // DELETE items/:id
-// itemsRouter.delete("/:id", async (req: Request, res: Response) => {
-//   ItemsController.deleteItemById(req, res);
-// });
-
 itemsRouter.delete("/:id", ItemsController.deleteItemById);
