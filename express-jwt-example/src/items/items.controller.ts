@@ -66,7 +66,7 @@ export const deleteItemById = async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
     await ItemsService.remove(id);
 
-    res.sendStatus(204).send(`Item ID: ${id} removed`);
+    res.status(200).send(`Item ID: ${id} removed`);
   } catch (e) {
     res.status(500).send(e.message);
   }
