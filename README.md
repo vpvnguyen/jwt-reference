@@ -19,7 +19,7 @@ Experimental sandbox for JWT
 
 node
 
-require('crypto').randomBytes(64).toString();
+require('crypto').randomBytes(64).toString('hex');
 ```
 
 - Create `.env` and store tokens
