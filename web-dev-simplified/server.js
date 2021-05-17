@@ -29,13 +29,14 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
+  // check if token exists from auth header
   if (!token) return res.status(401).json({ message: "No Token" });
 
-  // verify correct user
+  // verify access token
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
 
-    // set user to request if valid
+    // set user to express request
     req.user = user;
     next();
   });
@@ -60,7 +61,7 @@ app.post("/login", (req, res) => {
   refreshTokens.push(refreshToken);
 
   // return refresh token for username
-  res.json({ refreshToken });
+  res.status(204).json({ refreshToken });
 });
 
 app.post("/refreshToken", (req, res) => {
