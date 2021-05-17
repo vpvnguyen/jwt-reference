@@ -33,3 +33,7 @@ It restarts target node process when any of required files changes (as standard 
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts"
   }
 ```
+
+- `--respawn`: Keep watching for changes after the script has exited.
+- `--pretty`: Use pretty diagnostic formatter (`TS_NODE_PRETTY`).
+- `--transpile-only`: Use TypeScript's faster `transpileModule` (`TS_NODE_TRANSPILE_ONLY`).
