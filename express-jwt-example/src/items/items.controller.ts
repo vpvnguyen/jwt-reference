@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as ItemsService from "./items.service";
-import { BaseItem, Item } from "./item.interface";
+import { BaseItem, Item } from "./items.interface";
 
 export const findAllItems = async (_req: Request, res: Response) => {
   try {
@@ -22,7 +22,7 @@ export const findItemById = async (req: Request, res: Response) => {
       return res.status(200).send(item);
     }
 
-    res.status(404).send("item not found");
+    res.status(404).send("Item not found");
   } catch (e) {
     res.status(500).send(e.message);
   }
@@ -66,7 +66,7 @@ export const deleteItemById = async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
     await ItemsService.remove(id);
 
-    res.sendStatus(204);
+    res.sendStatus(204).send(`Item ID: ${id} removed`);
   } catch (e) {
     res.status(500).send(e.message);
   }
