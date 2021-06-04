@@ -12,23 +12,20 @@ export const authenticateToken = (
   next: NextFunction
 ) => {
   // get token from header
-  console.log("headers", req.headers);
   const authHeader = req.headers["authorization"];
-  console.log("headers authHeader", authHeader);
   const token = authHeader && authHeader.split(" ")[1];
-  console.log("headers token", token);
 
   // check if token exists from auth header
-  if (!token) return res.status(401).json({ message: "No Token" });
+  if (!token) return res.status(401).json({ message: "Token does not exist" });
 
   // verify access token
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: "Invalid Token" });
+    if (err) return res.status(403).json({ message: "Invalid token" });
 
-    // set user to express response locals
+    // set user to express response object to be passed to next function
     res.locals.user = user;
-    console.log("headers res.locals.user", res.locals.user);
 
+    // continue to next function
     next();
   });
 };
